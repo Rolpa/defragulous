@@ -56,13 +56,6 @@ typedef struct {
 	int		bind2;
 } bind_t;
 
-typedef struct
-{
-	char*	name;
-	float	defaultvalue;
-	float	value;	
-} configcvar_t;
-
 #define SAVE_NOOP		0
 #define SAVE_YES		1
 #define SAVE_NO			2
@@ -136,8 +129,8 @@ enum {
 	ID_AUTOSWITCH,
 	ID_MOUSESPEED,
 	ID_SELECTJOY,
-	ID_JOYANALOG,
 	ID_JOYTHRESHOLD,
+	ID_JOYANALOG,
 	ID_SMOOTHMOUSE
 };
 
@@ -241,8 +234,8 @@ typedef struct
 	menuaction_s		togglemenu;
 
 	menutext_s			selectjoy;
-	menuradiobutton_s	joyanalog;
 	menuslider_s		joythreshold;
+	menuradiobutton_s	joyanalog;
 	int					section;
 	char				playerModel[MAX_QPATH];
 	char				playerHead[MAX_QPATH];
@@ -269,7 +262,7 @@ static bind_t g_bindings[] =
 {
 	{"+scores",			"show scores",		ID_SHOWSCORES,	ANIM_IDLE,		K_TAB,			-1,		-1, -1},
 	{"+button2",		"use item",			ID_USEITEM,		ANIM_IDLE,		K_ENTER,		-1,		-1, -1},
-	{"+speed", 			"run / walk",		ID_SPEED,		ANIM_RUN,		K_SHIFT,		-1,		-1,	-1},
+	{"+speed", 			"run / walk",		ID_SPEED,		ANIM_RUN,		K_LEFTSHIFT,	K_RIGHTSHIFT, -1, -1},
 	{"+forward", 		"walk forward",		ID_FORWARD,		ANIM_WALK,		K_UPARROW,		-1,		-1, -1},
 	{"+back", 			"backpedal",		ID_BACKPEDAL,	ANIM_BACK,		K_DOWNARROW,	-1,		-1, -1},
 	{"+moveleft", 		"step left",		ID_MOVELEFT,	ANIM_STEPLEFT,	',',			-1,		-1, -1},
@@ -278,7 +271,7 @@ static bind_t g_bindings[] =
 	{"+movedown",		"down / crouch",	ID_MOVEDOWN,	ANIM_CROUCH,	'c',			-1,		-1, -1},
 	{"+left", 			"turn left",		ID_LEFT,		ANIM_TURNLEFT,	K_LEFTARROW,	-1,		-1, -1},
 	{"+right", 			"turn right",		ID_RIGHT,		ANIM_TURNRIGHT,	K_RIGHTARROW,	-1,		-1, -1},
-	{"+strafe", 		"sidestep / turn",	ID_STRAFE,		ANIM_IDLE,		K_ALT,			-1,		-1, -1},
+	{"+strafe", 		"sidestep / turn",	ID_STRAFE,		ANIM_IDLE,		K_LEFTALT,		K_RIGHTALT, -1, -1},
 	{"+lookup", 		"look up",			ID_LOOKUP,		ANIM_LOOKUP,	K_PGDN,			-1,		-1, -1},
 	{"+lookdown", 		"look down",		ID_LOOKDOWN,	ANIM_LOOKDOWN,	K_DEL,			-1,		-1, -1},
 	{"+mlook", 			"mouse look",		ID_MOUSELOOK,	ANIM_IDLE,		'/',			-1,		-1, -1},
@@ -298,7 +291,7 @@ static bind_t g_bindings[] =
 	{"weapon 12",		"proximity mine",	ID_WEAPON12,	ANIM_WEAPON12,	-1,				-1,		-1, -1},
 	{"weapon 13",		"chain gun",		ID_WEAPON13,	ANIM_WEAPON13,	-1,				-1,		-1, -1},
 #endif
-	{"+attack", 		"attack",			ID_ATTACK,		ANIM_ATTACK,	K_CTRL,			-1,		-1, -1},
+	{"+attack", 		"attack",			ID_ATTACK,		ANIM_ATTACK,	K_LEFTCTRL,		K_RIGHTCTRL, -1, -1},
 	{"weapprev",		"previous weapon",	ID_WEAPPREV,	ANIM_IDLE,		'[',			-1,		-1, -1},
 	{"weapnext", 		"next weapon",		ID_WEAPNEXT,	ANIM_IDLE,		']',			-1,		-1, -1},
 	{"+button3", 		"gesture",			ID_GESTURE,		ANIM_GESTURE,	K_MOUSE3,		-1,		-1, -1},
@@ -452,35 +445,6 @@ bind_t *g_bindings_list[MAX_SPLITVIEW] =
 	g_bindings4
 };
 
-static configcvar_t g_configcvars[] =
-{
-	{"cl_run",			0,					0},
-	{"2cl_run",			0,					0},
-	{"3cl_run",			0,					0},
-	{"4cl_run",			0,					0},
-	{"m_pitch",			0,					0},
-	{"cg_cyclePastGauntlet",0,				0},
-	{"2cg_cyclePastGauntlet",0,				0},
-	{"3cg_cyclePastGauntlet",0,				0},
-	{"4cg_cyclePastGauntlet",0,				0},
-	{"cg_autoswitch",	0,					0},
-	{"2cg_autoswitch",	0,					0},
-	{"3cg_autoswitch",	0,					0},
-	{"4cg_autoswitch",	0,					0},
-	{"sensitivity",		0,					0},
-	{"in_joystickUseAnalog",	0,			0},
-	{"2in_joystickUseAnalog",	0,			0},
-	{"3in_joystickUseAnalog",	0,			0},
-	{"4in_joystickUseAnalog",	0,			0},
-	{"in_joystickThreshold",	0,			0},
-	{"2in_joystickThreshold",	0,			0},
-	{"3in_joystickThreshold",	0,			0},
-	{"4in_joystickThreshold",	0,			0},
-	{"m_filter",		0,					0},
-	{"cl_freelook",		0,					0},
-	{NULL,				0,					0}
-};
-
 static menucommon_s *g_movement_controls[] =
 {
 	(menucommon_s *)&s_controls.alwaysrun,     
@@ -604,53 +568,16 @@ static menucommon_s **g_mini_controls[] = {
 
 /*
 =================
-Controls_InitCvars
-=================
-*/
-static void Controls_InitCvars( void )
-{
-	int				i;
-	configcvar_t*	cvarptr;
-
-	cvarptr = g_configcvars;
-	for (i=0; ;i++,cvarptr++)
-	{
-		if (!cvarptr->name)
-			break;
-
-		// get current value
-		cvarptr->value = trap_Cvar_VariableValue( cvarptr->name );
-
-		// get default value
-		trap_Cvar_Reset( cvarptr->name );
-		cvarptr->defaultvalue = trap_Cvar_VariableValue( cvarptr->name );
-
-		// restore current value
-		trap_Cvar_SetValue( cvarptr->name, cvarptr->value );
-	}
-}
-
-/*
-=================
 Controls_GetCvarDefault
 =================
 */
 static float Controls_GetCvarDefault( char* name )
 {
-	configcvar_t*	cvarptr;
-	int				i;
+	char defaultvaluebuf[MAX_CVAR_VALUE_STRING];
 
-	cvarptr = g_configcvars;
-	for (i=0; ;i++,cvarptr++)
-	{
-		if (!cvarptr->name)
-			return (0);
+	trap_Cvar_DefaultVariableStringBuffer( name, defaultvaluebuf, sizeof( defaultvaluebuf ) );
 
-		if (!strcmp(cvarptr->name,name))
-			break;
-	}
-
-	return (cvarptr->defaultvalue);
+	return atof( defaultvaluebuf );
 }
 
 /*
@@ -660,20 +587,7 @@ Controls_GetCvarValue
 */
 static float Controls_GetCvarValue( char* name )
 {
-	configcvar_t*	cvarptr;
-	int				i;
-
-	cvarptr = g_configcvars;
-	for (i=0; ;i++,cvarptr++)
-	{
-		if (!cvarptr->name)
-			return (0);
-
-		if (!strcmp(cvarptr->name,name))
-			break;
-	}
-
-	return (cvarptr->value);
+	return trap_Cvar_VariableValue( name );
 }
 
 
@@ -1130,8 +1044,8 @@ static void Controls_GetConfig( void )
 	s_controls.alwaysrun.curvalue = Com_Clamp( 0, 1, Controls_GetCvarValue( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "cl_run" ) ) );
 	s_controls.cyclepastgauntlet.curvalue = Com_Clamp( 0, 1, Controls_GetCvarValue( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "cg_cyclePastGauntlet" ) ) );
 	s_controls.autoswitch.curvalue = Com_Clamp( 0, 1, Controls_GetCvarValue( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "cg_autoswitch" ) ) );
-	s_controls.joyanalog.curvalue = Com_Clamp( 0, 1, Controls_GetCvarValue( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "in_joystickUseAnalog" ) ) );
 	s_controls.joythreshold.curvalue = Com_Clamp( 0.05f, 0.75f, Controls_GetCvarValue( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "in_joystickThreshold" ) ) );
+	s_controls.joyanalog.curvalue = Com_Clamp( 0, 1, Controls_GetCvarValue( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "in_joystickUseAnalog" ) ) );
 }
 
 /*
@@ -1179,8 +1093,8 @@ static void Controls_SetConfig( void )
 	trap_Cvar_SetValue( Com_LocalPlayerCvarName( s_controls.localPlayerNum, "cl_run" ), s_controls.alwaysrun.curvalue );
 	trap_Cvar_SetValue( Com_LocalPlayerCvarName( s_controls.localPlayerNum, "cg_cyclePastGauntlet" ), s_controls.cyclepastgauntlet.curvalue );
 	trap_Cvar_SetValue( Com_LocalPlayerCvarName( s_controls.localPlayerNum, "cg_autoswitch" ), s_controls.autoswitch.curvalue );
-	trap_Cvar_SetValue( Com_LocalPlayerCvarName( s_controls.localPlayerNum, "in_joystickUseAnalog" ), s_controls.joyanalog.curvalue );
 	trap_Cvar_SetValue( Com_LocalPlayerCvarName( s_controls.localPlayerNum, "in_joystickThreshold" ), s_controls.joythreshold.curvalue );
+	trap_Cvar_SetValue( Com_LocalPlayerCvarName( s_controls.localPlayerNum, "in_joystickUseAnalog" ), s_controls.joyanalog.curvalue );
 }
 
 /*
@@ -1218,8 +1132,8 @@ static void Controls_SetDefaults( void )
 	s_controls.autoswitch.curvalue = Controls_GetCvarDefault( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "cg_autoswitch" ) );
 	trap_Cvar_SetValue(Com_LocalPlayerCvarName(s_controls.localPlayerNum, "in_joystick"), 0);
 	trap_Cvar_SetValue(Com_LocalPlayerCvarName(s_controls.localPlayerNum, "in_joystickNo"), 0);
-	s_controls.joyanalog.curvalue    = Controls_GetCvarDefault( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "in_joystickUseAnalog" ) );
 	s_controls.joythreshold.curvalue = Controls_GetCvarDefault( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "in_joystickThreshold" ) );
+	s_controls.joyanalog.curvalue    = Controls_GetCvarDefault( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "in_joystickUseAnalog" ) );
 }
 
 /*
@@ -1496,8 +1410,8 @@ static void Controls_MenuEvent( void* ptr, int event )
 		case ID_ALWAYSRUN:
 		case ID_CYCLEPASTGAUNTLET:
 		case ID_AUTOSWITCH:
-		case ID_JOYANALOG:
 		case ID_JOYTHRESHOLD:
+		case ID_JOYANALOG:
 			if (event == QM_ACTIVATED)
 			{
 				s_controls.changesmade = qtrue;
@@ -2005,14 +1919,6 @@ static void Controls_MenuInit( int localPlayerNum )
 	s_controls.selectjoy.color				= text_color_normal;
 	s_controls.selectjoy.style				= UI_RIGHT|UI_SMALLFONT;
 
-	s_controls.joyanalog.generic.type      = MTYPE_RADIOBUTTON;
-	s_controls.joyanalog.generic.flags	   = QMF_SMALLFONT;
-	s_controls.joyanalog.generic.x	       = SCREEN_WIDTH/2;
-	s_controls.joyanalog.generic.name	   = "analog input";
-	s_controls.joyanalog.generic.id        = ID_JOYANALOG;
-	s_controls.joyanalog.generic.callback  = Controls_MenuEvent;
-	s_controls.joyanalog.generic.statusbar = Controls_StatusBar;
-
 	s_controls.joythreshold.generic.type	  = MTYPE_SLIDER;
 	s_controls.joythreshold.generic.x		  = SCREEN_WIDTH/2;
 	s_controls.joythreshold.generic.flags	  = QMF_SMALLFONT;
@@ -2022,6 +1928,14 @@ static void Controls_MenuInit( int localPlayerNum )
 	s_controls.joythreshold.minvalue		  = 0.05f;
 	s_controls.joythreshold.maxvalue		  = 0.75f;
 	s_controls.joythreshold.generic.statusbar = Controls_StatusBar;
+
+	s_controls.joyanalog.generic.type      = MTYPE_RADIOBUTTON;
+	s_controls.joyanalog.generic.flags	   = QMF_SMALLFONT;
+	s_controls.joyanalog.generic.x	       = SCREEN_WIDTH/2;
+	s_controls.joyanalog.generic.name	   = "analog input";
+	s_controls.joyanalog.generic.id        = ID_JOYANALOG;
+	s_controls.joyanalog.generic.callback  = Controls_MenuEvent;
+	s_controls.joyanalog.generic.statusbar = Controls_StatusBar;
 
 	s_controls.name.generic.type	= MTYPE_PTEXT;
 	s_controls.name.generic.flags	= QMF_CENTER_JUSTIFY|QMF_INACTIVE;
@@ -2053,8 +1967,8 @@ static void Controls_MenuInit( int localPlayerNum )
 	Menu_AddItem( &s_controls.menu, &s_controls.centerview );
 	Menu_AddItem( &s_controls.menu, &s_controls.zoomview );
 	Menu_AddItem( &s_controls.menu, &s_controls.selectjoy );
-	Menu_AddItem( &s_controls.menu, &s_controls.joyanalog );
 	Menu_AddItem( &s_controls.menu, &s_controls.joythreshold );
+	Menu_AddItem( &s_controls.menu, &s_controls.joyanalog );
 
 	Menu_AddItem( &s_controls.menu, &s_controls.alwaysrun );
 	Menu_AddItem( &s_controls.menu, &s_controls.run );
@@ -2101,9 +2015,6 @@ static void Controls_MenuInit( int localPlayerNum )
 
 	trap_Cvar_VariableStringBuffer( Com_LocalPlayerCvarName(s_controls.localPlayerNum, "name"), s_controls.name.string, 16 );
 	Q_CleanStr( s_controls.name.string );
-
-	// initialize the configurable cvars
-	Controls_InitCvars();
 
 	// initialize the current config
 	Controls_GetConfig();

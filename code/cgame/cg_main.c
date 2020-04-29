@@ -515,7 +515,7 @@ static cvarTable_t cgameCvarTable[] = {
 	{ &cg_forceBitmapFonts, "cg_forceBitmapFonts", "0", CVAR_ARCHIVE | CVAR_LATCH, RANGE_BOOL },
 	{ &cg_drawGrappleHook, "cg_drawGrappleHook", "1", CVAR_ARCHIVE, RANGE_BOOL },
 	{ &cg_drawBBox, "cg_drawBBox", "0", CVAR_CHEAT, RANGE_BOOL },
-	{ &cg_consoleFont, "cg_consoleFont", "fonts/LiberationMono-Bold.ttf", CVAR_ARCHIVE | CVAR_LATCH, RANGE_ALL },
+	{ &cg_consoleFont, "cg_consoleFont", "fonts/LiberationMono-Regular.ttf", CVAR_ARCHIVE | CVAR_LATCH, RANGE_ALL },
 	{ &cg_consoleFontSize, "cg_consoleFontSize", "8", CVAR_ARCHIVE | CVAR_LATCH, RANGE_INT( 4, 24 ) },
 	{ &cg_hudFont, "cg_hudFont", "fonts/LiberationSans-Bold.ttf", CVAR_ARCHIVE | CVAR_LATCH, RANGE_ALL },
 	{ &cg_hudFontBorder, "cg_hudFontBorder", "2", CVAR_ARCHIVE | CVAR_LATCH, RANGE_FLOAT( 0, 10 ) },
@@ -2393,7 +2393,7 @@ static void CG_FeederSelection(float feederID, int index) {
 static float CG_Cvar_Get(const char *cvar) {
 	char buff[128];
 	memset(buff, 0, sizeof(buff));
-	trap_Cvar_VariableStringBuffer(cvar, buff, sizeof(buff));
+	trap_Cvar_LatchedVariableStringBuffer(cvar, buff, sizeof(buff));
 	return atof(buff);
 }
 
@@ -2447,7 +2447,6 @@ CG_LoadHudMenu();
 void CG_LoadHudMenu( void ) {
 	char buff[1024];
 	const char *hudSet;
-	menuDef_t *menu;
 
 	cgDC.registerShaderNoMip = &trap_R_RegisterShaderNoMip;
 	cgDC.setColor = &trap_R_SetColor;
@@ -2472,7 +2471,7 @@ void CG_LoadHudMenu( void ) {
 	cgDC.runScript = &CG_RunMenuScript;
 	cgDC.getTeamColor = &CG_GetTeamColor;
 	cgDC.setCVar = trap_Cvar_Set;
-	cgDC.getCVarString = trap_Cvar_VariableStringBuffer;
+	cgDC.getCVarString = trap_Cvar_LatchedVariableStringBuffer;
 	cgDC.getCVarValue = CG_Cvar_Get;
 	cgDC.drawTextWithCursor = &CG_Text_PaintWithCursor;
 	cgDC.setOverstrikeMode = &trap_Key_SetOverstrikeMode;
@@ -2499,6 +2498,9 @@ void CG_LoadHudMenu( void ) {
 	cgDC.stopCinematic = &CG_StopCinematic;
 	cgDC.drawCinematic = &CG_DrawCinematic;
 	cgDC.runCinematicFrame = &CG_RunCinematicFrame;
+	cgDC.adjustFrom640 = &CG_AdjustFrom640;
+	cgDC.setScreenPlacement = &CG_SetScreenPlacement;
+	cgDC.popScreenPlacement = &CG_PopScreenPlacement;
 	
 	Init_Display(&cgDC);
 
@@ -2511,6 +2513,18 @@ void CG_LoadHudMenu( void ) {
 	}
 
 	CG_LoadMenus(hudSet);
+	CG_HudMenuHacks();
+}
+
+/*
+=================
+CG_HudMenuHacks
+=================
+*/
+void CG_HudMenuHacks( void ) {
+	menuDef_t *menu;
+
+	Init_Display(&cgDC);
 
 	// make voice chat head stick to left side in widescreen
 	menu = Menus_FindByName( "voiceMenu" );
@@ -3050,7 +3064,7 @@ void CG_DistributeKeyEvent( int key, qboolean down, unsigned time, connstate_t s
 	}
 
 	// console key is hardcoded, so the user can never unbind it
-	if( key == K_CONSOLE || ( key == K_ESCAPE && trap_Key_IsDown( K_SHIFT ) ) ) {
+	if( key == K_CONSOLE || ( key == K_ESCAPE && ( trap_Key_IsDown( K_LEFTSHIFT ) || trap_Key_IsDown( K_RIGHTSHIFT ) ) ) ) {
 		if ( down ) {
 			Con_ToggleConsole_f();
 		}
@@ -3100,6 +3114,9 @@ void CG_DistributeKeyEvent( int key, qboolean down, unsigned time, connstate_t s
 		CG_KeyEvent( key, down );
 	} else if ( keyCatcher & KEYCATCH_UI ) {
 		UI_KeyEvent( key, down );
+	} else if ( state == CA_DISCONNECTED ) {
+		// console is drawn if disconnected and not KEYCATCH_UI
+		Console_Key( key, down );
 	}
 }
 
@@ -3126,6 +3143,9 @@ void CG_DistributeCharEvent( int character, connstate_t state ) {
 		CG_KeyEvent( key, qtrue );
 	} else if ( keyCatcher & KEYCATCH_UI ) {
 		UI_KeyEvent( key, qtrue );
+	} else if ( state == CA_DISCONNECTED ) {
+		// console is drawn if disconnected and not KEYCATCH_UI
+		Console_Key( key, qtrue );
 	}
 }
 
