@@ -683,6 +683,7 @@ qboolean PlayerDisconnect( int playerNum, qboolean force );
 void PlayerBegin( int playerNum );
 void ClientCommand( int connectionNum );
 float PlayerHandicap( gplayer_t *player );
+void PlayerTouch(gentity_t *self, gentity_t *other, trace_t *trace);
 
 //
 // g_active.c

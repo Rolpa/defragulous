@@ -458,6 +458,11 @@ void PlayerTimerActions( gentity_t *ent, int msec ) {
 		if ( player->ps.stats[STAT_ARMOR] > player->ps.stats[STAT_MAX_HEALTH] ) {
 			player->ps.stats[STAT_ARMOR]--;
 		}
+
+		if ( player->ps.ammo[WP_ROCKET_LAUNCHER] < 10) {
+			player->ps.ammo[WP_ROCKET_LAUNCHER]++;
+		}
+
 	}
 #ifdef MISSIONPACK
 	if( BG_ItemForItemNum( player->ps.stats[STAT_PERSISTANT_POWERUP] )->giTag == PW_AMMOREGEN ) {
@@ -553,12 +558,12 @@ void PlayerEvents( gentity_t *ent, int oldEventSequence ) {
 				break;
 			}
 			if ( event == EV_FALL_FAR ) {
-				damage = 10;
+				damage = 0; //was 10
 			} else {
-				damage = 5;
+				damage = 0; //was 5
 			}
 			ent->pain_debounce_time = level.time + 200;	// no normal pain sound
-			G_Damage (ent, NULL, NULL, NULL, NULL, damage, 0, MOD_FALLING);
+			//G_Damage (ent, NULL, NULL, NULL, NULL, damage, 0, MOD_FALLING);
 			break;
 
 		case EV_FIRE_WEAPON:

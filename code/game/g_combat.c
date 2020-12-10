@@ -1110,7 +1110,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 	// do the damage
 	if (take) {
-		targ->health = targ->health - take;
+		
+		if (!attacker->player || (attacker->player && mod == MOD_TRIGGER_HURT)) {
+			targ->health = targ->health - take;
+		}
+
 		if ( targ->player ) {
 			targ->player->ps.stats[STAT_HEALTH] = targ->health;
 		}

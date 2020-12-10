@@ -996,7 +996,7 @@ void PlayerBegin( int playerNum ) {
 		trap_UnlinkEntity( ent );
 	}
 	G_InitGentity( ent );
-	ent->touch = 0;
+	ent->touch = PlayerTouch;
 	ent->pain = 0;
 	ent->player = player;
 
@@ -1041,6 +1041,26 @@ void PlayerBegin( int playerNum ) {
 
 	// count current players and rank for scoreboard
 	CalculateRanks();
+}
+
+void PlayerTouch(gentity_t *self, gentity_t *other, trace_t *trace) {
+	
+	if (!self->player) {
+		return;
+	}
+	
+	
+	// if (other->player) {
+		
+		if ( other->player && other->player->ps.powerups[PW_BATTLESUIT] ) {
+			G_Printf( "touchy touch touch i no haz battle suit:\n" );
+			// other->die (other, self, self, 999, 0);
+			// G_Damage (other, self, self, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
+		// }
+
+			G_Damage (self, other, other, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
+		}
+	// }
 }
 
 /*
@@ -1174,17 +1194,20 @@ void PlayerSpawn(gentity_t *ent) {
 		player->ps.stats[STAT_WEAPONS] = ( 1 << WP_RAILGUN );
 		player->ps.ammo[WP_RAILGUN] = 999;
 	} else {
-		player->ps.stats[STAT_WEAPONS] = ( 1 << WP_MACHINEGUN );
-		if ( g_gametype.integer == GT_TEAM ) {
-			player->ps.ammo[WP_MACHINEGUN] = 50;
-		} else {
-			player->ps.ammo[WP_MACHINEGUN] = 100;
-		}
+		// player->ps.stats[STAT_WEAPONS] = ( 1 << WP_MACHINEGUN );
+		// if ( g_gametype.integer == GT_TEAM ) {
+		// 	player->ps.ammo[WP_MACHINEGUN] = 50;
+		// } else {
+		// 	player->ps.ammo[WP_MACHINEGUN] = 100;
+		// }
 	}
 
 	player->ps.stats[STAT_WEAPONS] |= ( 1 << WP_GAUNTLET );
 	player->ps.ammo[WP_GAUNTLET] = -1;
 	player->ps.ammo[WP_GRAPPLING_HOOK] = -1;
+
+	player->ps.stats[STAT_WEAPONS] |= ( 1 << WP_ROCKET_LAUNCHER );
+	player->ps.ammo[WP_ROCKET_LAUNCHER] = 10;
 
 	// health will count down towards max_health
 	ent->health = player->ps.stats[STAT_HEALTH] = player->ps.stats[STAT_MAX_HEALTH] + 25;
