@@ -112,7 +112,7 @@ void TossPlayerItems( gentity_t *self ) {
 		item = BG_FindItemForWeapon( weapon );
 
 		// spawn the item
-		Drop_Item( self, item, 0 );
+		// Drop_Item( self, item, 0 );
 	}
 
 	// drop all the powerups if not in teamplay
