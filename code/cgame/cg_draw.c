@@ -2843,7 +2843,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame, qboolean *voiceMenuOpen)
 			CG_DrawStatusBar();
 #endif
       
-			CG_DrawAmmoWarning();
+			// CG_DrawAmmoWarning();
 
 #ifdef MISSIONPACK
 			CG_DrawProxWarning();

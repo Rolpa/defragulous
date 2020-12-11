@@ -1043,24 +1043,47 @@ void PlayerBegin( int playerNum ) {
 	CalculateRanks();
 }
 
+/*
+===========
+PlayerTouch
+
+Called every time a player touches an entity, but only handles events between two
+different players
+============
+*/
 void PlayerTouch(gentity_t *self, gentity_t *other, trace_t *trace) {
-	
+	//If I listen hard enough, I can hear you shout 'what the fuck?' across the room, street, country, universe, etc.
+	//should probably generate a client event which gets sent back to the server
 	if (!self->player) {
 		return;
 	}
-	
-	
-	// if (other->player) {
 		
-		if ( other->player && other->player->ps.powerups[PW_BATTLESUIT] ) {
-			G_Printf( "touchy touch touch i no haz battle suit:\n" );
-			// other->die (other, self, self, 999, 0);
-			// G_Damage (other, self, self, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
-		// }
+	if ( other->player && other->player->ps.powerups[PW_BATTLESUIT] ) {
+		G_Damage (self, other, other, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
+	}
 
-			G_Damage (self, other, other, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
+	if ( self->player && self->player->ps.powerups[PW_BATTLESUIT] ) {
+		G_Damage (other, self, self, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
+	}
+
+	if ( other->player && (other->player->ps.powerups[PW_REDFLAG] || other->player->ps.powerups[PW_BLUEFLAG] )) {		// only happens in standard CTF
+		G_Damage (other, self, self, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
+
+		if ( self->player->ps.powerups[PW_REDFLAG] || self->player->ps.powerups[PW_BLUEFLAG]) {		// only happens in standard CTF
+			G_Damage (self, other, other, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);	
 		}
-	// }
+	}
+
+	if ( self->player && (self->player->ps.powerups[PW_REDFLAG] || self->player->ps.powerups[PW_BLUEFLAG])) {		// only happens in standard CTF
+		G_Damage (self, other, other, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
+
+		if ( other->player->ps.powerups[PW_REDFLAG] || other->player->ps.powerups[PW_BLUEFLAG]) {		// only happens in standard CTF
+			G_Damage (other, self, self, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);	
+		}
+	}
+		// else if ( other->player && other->player->ps.powerups[PW_BLUEFLAG] ) {	// only happens in standard CTF
+		// 	G_Damage (other, self, self, NULL, NULL, 999, 0, MOD_TRIGGER_HURT);
+		// }
 }
 
 /*
@@ -1202,12 +1225,12 @@ void PlayerSpawn(gentity_t *ent) {
 		// }
 	}
 
-	player->ps.stats[STAT_WEAPONS] |= ( 1 << WP_GAUNTLET );
+	// player->ps.stats[STAT_WEAPONS] |= ( 1 << WP_GAUNTLET );
 	player->ps.ammo[WP_GAUNTLET] = -1;
 	player->ps.ammo[WP_GRAPPLING_HOOK] = -1;
 
 	player->ps.stats[STAT_WEAPONS] |= ( 1 << WP_ROCKET_LAUNCHER );
-	player->ps.ammo[WP_ROCKET_LAUNCHER] = 10;
+	player->ps.ammo[WP_ROCKET_LAUNCHER] = 5;
 
 	// health will count down towards max_health
 	ent->health = player->ps.stats[STAT_HEALTH] = player->ps.stats[STAT_MAX_HEALTH] + 25;

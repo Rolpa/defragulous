@@ -459,7 +459,7 @@ void PlayerTimerActions( gentity_t *ent, int msec ) {
 			player->ps.stats[STAT_ARMOR]--;
 		}
 
-		if ( player->ps.ammo[WP_ROCKET_LAUNCHER] < 10) {
+		if ( player->ps.ammo[WP_ROCKET_LAUNCHER] < 5) {
 			player->ps.ammo[WP_ROCKET_LAUNCHER]++;
 		}
 
@@ -840,6 +840,10 @@ void PlayerThink_real( gentity_t *ent ) {
 #endif
 	if ( player->ps.powerups[PW_HASTE] ) {
 		player->ps.speed *= 1.3;
+	}
+
+	if ( player->ps.powerups[PW_BLUEFLAG] || player->ps.powerups[PW_REDFLAG] ) {
+		player->ps.speed *= .80;
 	}
 
 	// Let go of the hook if we aren't firing
