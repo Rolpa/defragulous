@@ -419,14 +419,14 @@ static void CG_DrawStatusBar( void ) {
 		CG_DrawStatusBarFlag( 185 + CHAR_WIDTH*3 + TEXT_ICON_SPACE + ICON_SIZE, TEAM_FREE );
 	}
 
-	if ( ps->stats[ STAT_ARMOR ] ) {
-		origin[0] = 90;
-		origin[1] = 0;
-		origin[2] = -10;
-		angles[YAW] = ( cg.time & 2047 ) * 360 / 2048.0;
-		CG_Draw3DModel( 370 + CHAR_WIDTH*3 + TEXT_ICON_SPACE, SCREEN_HEIGHT - ICON_SIZE, ICON_SIZE, ICON_SIZE,
-					   cgs.media.armorModel, NULL, origin, angles );
-	}
+	// if ( ps->stats[ STAT_ARMOR ] ) {
+	// 	origin[0] = 90;
+	// 	origin[1] = 0;
+	// 	origin[2] = -10;
+	// 	angles[YAW] = ( cg.time & 2047 ) * 360 / 2048.0;
+	// 	CG_Draw3DModel( 370 + CHAR_WIDTH*3 + TEXT_ICON_SPACE, SCREEN_HEIGHT - ICON_SIZE, ICON_SIZE, ICON_SIZE,
+	// 				   cgs.media.armorModel, NULL, origin, angles );
+	// }
 	//
 	// ammo
 	//
@@ -478,11 +478,11 @@ static void CG_DrawStatusBar( void ) {
 	//
 	value = ps->stats[STAT_ARMOR];
 	if (value > 0 ) {
-		CG_DrawField (370, SCREEN_HEIGHT, UI_VA_BOTTOM, 3, value, colors[0]);
+		// CG_DrawField (370, SCREEN_HEIGHT, UI_VA_BOTTOM, 3, value, colors[0]);
 
 		// if we didn't draw a 3D icon, draw a 2D icon for armor
 		if ( !cg_draw3dIcons.integer && cg_drawIcons.integer ) {
-			CG_DrawPic( 370 + CHAR_WIDTH*3 + TEXT_ICON_SPACE, SCREEN_HEIGHT - ICON_SIZE, ICON_SIZE, ICON_SIZE, cgs.media.armorIcon );
+			// CG_DrawPic( 370 + CHAR_WIDTH*3 + TEXT_ICON_SPACE, SCREEN_HEIGHT - ICON_SIZE, ICON_SIZE, ICON_SIZE, cgs.media.armorIcon );
 		}
 
 	}
