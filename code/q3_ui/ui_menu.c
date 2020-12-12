@@ -221,7 +221,9 @@ static void Main_MenuDraw( void ) {
 	ent.renderfx = RF_LIGHTING_ORIGIN | RF_NOSHADOW;
 	VectorCopy( ent.origin, ent.oldorigin );
 
-	CG_AddRefEntityWithMinLight( &ent );
+	// CG_AddRefEntityWithMinLight( &ent );
+
+	UI_DrawProportionalString( 320, 48, "DEFRAGULOUS", UI_CENTER|UI_GIANTFONT, color_white );
 
 	trap_R_RenderScene( &refdef );
 	
@@ -412,11 +414,11 @@ void UI_MainMenu( void ) {
 	s_main.exit.color						= text_big_color;
 	s_main.exit.style						= style;
 
-	Menu_AddItem( &s_main.menu,	&s_main.singleplayer );
+	//Menu_AddItem( &s_main.menu,	&s_main.singleplayer );
 	Menu_AddItem( &s_main.menu,	&s_main.multiplayer );
 	Menu_AddItem( &s_main.menu,	&s_main.setup );
 	Menu_AddItem( &s_main.menu,	&s_main.demos );
-	Menu_AddItem( &s_main.menu,	&s_main.cinematics );
+	// Menu_AddItem( &s_main.menu,	&s_main.cinematics );
 #ifndef MISSIONPACK
 	if (teamArena) {
 		Menu_AddItem( &s_main.menu,	&s_main.teamArena );
