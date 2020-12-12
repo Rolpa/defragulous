@@ -97,9 +97,9 @@ typedef struct {
 static startserver_t s_startserver;
 
 static const char *gametype_items[] = {
-	"Free For All",
-	"Team Deathmatch",
-	"Tournament",
+	// "Free For All",
+	// "Team Deathmatch",
+	// "Tournament",
 	"Capture the Flag",
 #ifdef MISSIONPACK
 	"1 Flag CTF",
@@ -109,12 +109,12 @@ static const char *gametype_items[] = {
 	NULL
 };
 
-static int gametype_remap[] = {GT_FFA, GT_TEAM, GT_TOURNAMENT, GT_CTF
+static int gametype_remap[] = {GT_CTF //GT_FFA, GT_TEAM, GT_TOURNAMENT, GT_CTF
 #ifdef MISSIONPACK
 ,GT_1FCTF, GT_OBELISK, GT_HARVESTER
 #endif
 };
-static int gametype_remap2[] = {0, 2, 0, 1, 3
+static int gametype_remap2[] = {0 //, 2, 0, 1, 3
 #ifdef MISSIONPACK
 ,4, 5, 6
 #endif
@@ -571,7 +571,7 @@ static void StartServer_MenuInit( qboolean multiplayer ) {
 	Menu_AddItem( &s_startserver.menu, &s_startserver.framel );
 	Menu_AddItem( &s_startserver.menu, &s_startserver.framer );
 
-	Menu_AddItem( &s_startserver.menu, &s_startserver.gametype );
+	// Menu_AddItem( &s_startserver.menu, &s_startserver.gametype );
 	for (i=0; i<MAX_MAPSPERPAGE; i++)
 	{
 		Menu_AddItem( &s_startserver.menu, &s_startserver.mappics[i] );
@@ -1400,8 +1400,8 @@ static void ServerOptions_MenuInit( qboolean multiplayer ) {
 
 	memset( &s_serveroptions, 0 ,sizeof(serveroptions_t) );
 	s_serveroptions.multiplayer = multiplayer;
-	s_serveroptions.gametype = (int) Com_Clamp(0, ARRAY_LEN(gametype_remap2) - 1,
-						trap_Cvar_VariableValue("g_gametype"));
+	s_serveroptions.gametype = 4; //(int) Com_Clamp(0, ARRAY_LEN(gametype_remap2) - 1,
+						//trap_Cvar_VariableValue("g_gametype"));
 
 	ServerOptions_Cache();
 
