@@ -424,9 +424,9 @@ void UI_MainMenu( void ) {
 		Menu_AddItem( &s_main.menu,	&s_main.teamArena );
 	}
 #endif
-	if ( !uis.demoversion ) {
-		Menu_AddItem( &s_main.menu,	&s_main.mods );
-	}
+	// if ( !uis.demoversion ) {
+	// 	Menu_AddItem( &s_main.menu,	&s_main.mods );
+	// }
 	Menu_AddItem( &s_main.menu,	&s_main.exit );             
 
 	uis.menusp = 0;
