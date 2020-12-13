@@ -333,6 +333,7 @@ struct gplayer_s {
 	int			airOutTime;
 
 	int			lastKillTime;		// for multiple kill rewards
+	int			lastRocketTime; 	// used for rocket ammo regeneration
 
 	qboolean	fireHeld;			// used for hook
 	gentity_t	*hook;				// grapple hook if out

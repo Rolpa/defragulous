@@ -459,11 +459,8 @@ void PlayerTimerActions( gentity_t *ent, int msec ) {
 			player->ps.stats[STAT_ARMOR]--;
 		}
 
-		if ( player->ps.ammo[WP_ROCKET_LAUNCHER] < 5) {
-			player->ps.ammo[WP_ROCKET_LAUNCHER]++;
-		}
-
 	}
+
 #ifdef MISSIONPACK
 	if( BG_ItemForItemNum( player->ps.stats[STAT_PERSISTANT_POWERUP] )->giTag == PW_AMMOREGEN ) {
 		int w, max, inc, t, i;
@@ -844,6 +841,14 @@ void PlayerThink_real( gentity_t *ent ) {
 
 	if ( player->ps.powerups[PW_BLUEFLAG] || player->ps.powerups[PW_REDFLAG] ) {
 		player->ps.speed *= .80;
+	}
+
+	if ( level.time - player->lastRocketTime > 1500 ) {
+		if ( player->ps.ammo[WP_ROCKET_LAUNCHER] < 5) {
+			player->ps.ammo[WP_ROCKET_LAUNCHER]++;
+		}
+		
+		player->lastRocketTime = level.time;
 	}
 
 	// Let go of the hook if we aren't firing

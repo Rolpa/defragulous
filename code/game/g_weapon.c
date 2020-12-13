@@ -401,6 +401,10 @@ void Weapon_RocketLauncher_Fire (gentity_t *ent) {
 	m->damage *= s_quadFactor;
 	m->splashDamage *= s_quadFactor;
 
+	if (ent->player) {
+		ent->player->lastRocketTime = level.time;
+	}
+
 //	VectorAdd( m->s.pos.trDelta, ent->player->ps.velocity, m->s.pos.trDelta );	// "real" physics
 }
 
