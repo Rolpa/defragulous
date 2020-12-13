@@ -1637,7 +1637,7 @@ static void ServerOptions_MenuInit( qboolean multiplayer ) {
 	if( s_serveroptions.gametype >= GT_TEAM ) {
 		Menu_AddItem( &s_serveroptions.menu, &s_serveroptions.friendlyfire );
 	}
-	Menu_AddItem( &s_serveroptions.menu, &s_serveroptions.instagib );
+	// Menu_AddItem( &s_serveroptions.menu, &s_serveroptions.instagib );
 	Menu_AddItem( &s_serveroptions.menu, &s_serveroptions.pure );
 	if( s_serveroptions.multiplayer ) {
 		Menu_AddItem( &s_serveroptions.menu, &s_serveroptions.publicserver );
