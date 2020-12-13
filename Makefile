@@ -110,7 +110,7 @@ SOURCE_ARCHIVE=mint-arena
 endif
 
 ifndef BASEGAME
-BASEGAME=baseq3
+BASEGAME=basedefrag
 endif
 
 ifndef BASEGAME_CFLAGS
