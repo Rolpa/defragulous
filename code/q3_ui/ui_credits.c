@@ -59,10 +59,10 @@ static void UI_CreditMenu_Draw_ioq3( void ) {
 
 	static const char *names[] = {
 		"",
-		S_COLOR_YELLOW "id Software",
-		S_COLOR_RED "ioquake3 contributors",
-		S_COLOR_GREEN "Spearmint contributors",
-		"",
+		S_COLOR_WHITE "John Carmack and id Software",
+		S_COLOR_WHITE "ioquake3 contributors",
+		S_COLOR_WHITE "Spearmint contributors",
+		S_COLOR_WHITE "OpenArena contributors",
 		"...and many, many others!",  // keep this one last.
 		NULL
 	};
@@ -70,7 +70,7 @@ static void UI_CreditMenu_Draw_ioq3( void ) {
 	// Center text vertically on the screen
 	y = (SCREEN_HEIGHT - ARRAY_LEN(names) * (1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE)) / 2;
 
-	UI_DrawProportionalString( 320, y, "Spearmint Quake 3 credits:", UI_CENTER|UI_SMALLFONT, color_white );
+	UI_DrawProportionalString( 320, y, "Special thanks to:", UI_CENTER|UI_SMALLFONT, color_white );
 	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
 
 	for (i = 0; names[i]; i++) {
@@ -78,6 +78,7 @@ static void UI_CreditMenu_Draw_ioq3( void ) {
 		y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
 	}
 
+	UI_DrawString( 320, 439, "http://www.openarena.ws/smfnews.php", UI_CENTER|UI_SMALLFONT, colorGreen );
 	UI_DrawString( 320, 459, "https://clover.moe/spearmint", UI_CENTER|UI_SMALLFONT, colorGreen );
 }
 
@@ -111,54 +112,54 @@ static void UI_CreditMenu_Draw( void ) {
 	int		y;
 
 	y = 12;
-	UI_DrawProportionalString( 320, y, "id Software is:", UI_CENTER|UI_SMALLFONT, color_white );
+	UI_DrawProportionalString( 320, y, "DEFRAGULOUS", UI_CENTER|UI_SMALLFONT, color_white );
 
 	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Programming", UI_CENTER|UI_SMALLFONT, color_white );
+	UI_DrawProportionalString( 320, y, "Written for 7dfps 2020", UI_CENTER|UI_SMALLFONT, color_white );
 	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "John Carmack, Robert A. Duffy, Jim Dose'", UI_CENTER|UI_SMALLFONT, color_white );
+	UI_DrawProportionalString( 320, y, "Thanks for playing!", UI_CENTER|UI_SMALLFONT, color_white );
 
-	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Art", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Adrian Carmack, Kevin Cloud,", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Kenneth Scott, Seneca Menard, Fred Nilsson", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Adrian Carmack, Kevin Cloud,", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Kenneth Scott, Seneca Menard, Fred Nilsson", UI_CENTER|UI_SMALLFONT, color_white );
 
-	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Game Designer", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Graeme Devine", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Game Designer", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Graeme Devine", UI_CENTER|UI_SMALLFONT, color_white );
 
-	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Level Design", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Tim Willits, Christian Antkow, Paul Jaquays", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Level Design", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Tim Willits, Christian Antkow, Paul Jaquays", UI_CENTER|UI_SMALLFONT, color_white );
 
-	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "CEO", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Todd Hollenshead", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "CEO", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Todd Hollenshead", UI_CENTER|UI_SMALLFONT, color_white );
 
-	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Director of Business Development", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Marty Stratton", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Director of Business Development", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Marty Stratton", UI_CENTER|UI_SMALLFONT, color_white );
 
-	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Biz Assist and id Mom", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Donna Jackson", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Biz Assist and id Mom", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Donna Jackson", UI_CENTER|UI_SMALLFONT, color_white );
 
-	y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Development Assistance", UI_CENTER|UI_SMALLFONT, color_white );
-	y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawProportionalString( 320, y, "Eric Webb", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += 1.42 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Development Assistance", UI_CENTER|UI_SMALLFONT, color_white );
+	// y += PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
+	// UI_DrawProportionalString( 320, y, "Eric Webb", UI_CENTER|UI_SMALLFONT, color_white );
 
-	y += 1.35 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE;
-	UI_DrawString( 320, y, "To order: 1-800-idgames     www.quake3arena.com     www.idsoftware.com", UI_CENTER|UI_SMALLFONT, color_red );
+	y += 1.35 * PROP_HEIGHT * PROP_SMALL_SIZE_SCALE * 14;
+	UI_DrawString( 320, y, "(c) 2020 Stefano Pinti", UI_CENTER|UI_SMALLFONT, color_red );
 	y += SMALLCHAR_HEIGHT;
-	UI_DrawString( 320, y, "Quake III Arena(c) 1999-2000, Id Software, Inc.  All Rights Reserved", UI_CENTER|UI_SMALLFONT, color_red );
+	UI_DrawString( 320, y, "https://itch.io/jam/7dfps-2020", UI_CENTER|UI_SMALLFONT, color_red );
 }
 
 
